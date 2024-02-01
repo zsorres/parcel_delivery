@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- User tábla létrehozása -->
+    <changeSet id="1" author="csigizs">
+        <createTable tableName="customer" schemaName="parcel_delivery">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="first_name" type="text"/>
+            <column name="last_name" type="text"/>
+            <column name="main_address_id" type="bigint"/>
+            <column name="company_id" type="bigint"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Address tábla létrehozása -->
+    <changeSet id="2" author="csigizs">
+        <createTable tableName="address" schemaName="parcel_delivery">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="country" type="text"/>
+            <column name="city" type="text"/>
+            <column name="postal_code" type="text"/>
+            <column name="address" type="text"/>
+            <column name="address_type" type="text"/>
+            <column name="address_number" type="text"/>
+            <column name="address_info" type="text"/>
+            <column name="customer_id" type="bigint">
+                <constraints nullable="true" foreignKeyName="fk_address_customer" references="customer(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Company tábla létrehozása -->
+    <changeSet id="3" author="csigizs">
+        <createTable tableName="company" schemaName="parcel_delivery">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="tax_number" type="text"/>
+            <column name="eu_tax_number" type="text"/>
+            <column name="main_address_id" type="bigint">
+                <constraints nullable="true" foreignKeyName="fk_company_address" references="address(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Parcel tábla létrehozása -->
+    <changeSet id="4" author="csigizs">
+        <createTable tableName="parcel" schemaName="parcel_delivery">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="parcel_number" type="bigint"/>
+            <column name="status" type="text"/>
+            <column name="status_date" type="date"/>
+            <column name="deleted" type="boolean"/>
+            <column name="actual_position" type="text"/>
+            <column name="delivered" type="boolean"/>
+            <column name="customer_id" type="bigint">
+                <constraints nullable="true" foreignKeyName="fk_parcel_customer" references="customer(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
